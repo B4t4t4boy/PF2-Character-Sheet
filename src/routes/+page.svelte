@@ -1,0 +1,1 @@
+<!-- Main character sheet page - all content is handled in +layout.svelte's tabs -->

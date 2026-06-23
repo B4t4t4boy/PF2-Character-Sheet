@@ -1,0 +1,102 @@
+<script lang="ts">
+	import type { CharacterState } from '$lib/stores/character.svelte.ts';
+
+	interface Props {
+		character: CharacterState;
+	}
+
+	let { character }: Props = $props();
+
+	function addClass() {
+		character.data.classes.push({
+			name: '',
+			level: 1,
+			hdSize: 10,
+			babProgression: 'medium',
+			fortProgression: true,
+			refProgression: false,
+			willProgression: false,
+			skillPointsPerLevel: 4
+		});
+	}
+
+	function removeClass(index: number) {
+		character.data.classes.splice(index, 1);
+	}
+</script>
+
+<div class="section-card overflow-hidden">
+	<div class="section-header">🎓 Classes</div>
+	<div class="p-1.5">
+		<div class="flex items-center justify-end mb-1">
+			<button class="btn-primary" onclick={addClass}>+ Add Class</button>
+		</div>
+		{#if character.data.classes.length === 0}
+			<div class="text-xs text-ink-light italic text-center py-3">No classes added yet. Click "+ Add Class" to begin.</div>
+		{/if}
+		<div class="space-y-1.5">
+			{#each character.data.classes as cls, i}
+				<div class="section-card overflow-hidden">
+					<div class="flex items-center justify-between px-1.5 py-0.5 bg-warm-100 border-b border-warm-200">
+						<span class="text-xs font-bold text-burgundy uppercase tracking-wider">🎓 Class {i + 1}</span>
+						<button class="btn-danger text-xs py-0.5 px-1.5" onclick={() => removeClass(i)}>✕ Remove</button>
+					</div>
+					<div class="p-1.5">
+						<div class="grid grid-cols-4 gap-1.5 text-xs">
+							<div>
+								<div class="stat-label">Name</div>
+								<input type="text" class="grid-input" placeholder="Fighter" bind:value={cls.name} />
+							</div>
+							<div>
+								<div class="stat-label">Level</div>
+								<input type="number" class="grid-input" bind:value={cls.level} min="1" max="20" />
+							</div>
+							<div>
+								<div class="stat-label">HD Size</div>
+								<select class="grid-input" bind:value={cls.hdSize}>
+									<option value={6}>d6</option>
+									<option value={8}>d8</option>
+									<option value={10}>d10</option>
+									<option value={12}>d12</option>
+								</select>
+							</div>
+							<div>
+								<div class="stat-label">BAB</div>
+								<select class="grid-input" bind:value={cls.babProgression}>
+									<option value="fast">Fast</option>
+									<option value="medium">Medium</option>
+									<option value="slow">Slow</option>
+								</select>
+							</div>
+							<div>
+								<div class="stat-label">Fort Save</div>
+								<select class="grid-input" bind:value={cls.fortProgression}>
+									<option value={true}>Good</option>
+									<option value={false}>Poor</option>
+								</select>
+							</div>
+							<div>
+								<div class="stat-label">Ref Save</div>
+								<select class="grid-input" bind:value={cls.refProgression}>
+									<option value={true}>Good</option>
+									<option value={false}>Poor</option>
+								</select>
+							</div>
+							<div>
+								<div class="stat-label">Will Save</div>
+								<select class="grid-input" bind:value={cls.willProgression}>
+									<option value={true}>Good</option>
+									<option value={false}>Poor</option>
+								</select>
+							</div>
+							<div>
+								<div class="stat-label">Skill Pts/Lvl</div>
+								<input type="number" class="grid-input" bind:value={cls.skillPointsPerLevel} min="0" max="10" />
+							</div>
+						</div>
+					</div>
+				</div>
+			{/each}
+		</div>
+	</div>
+</div>

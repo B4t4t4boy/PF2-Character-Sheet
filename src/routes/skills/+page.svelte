@@ -1,0 +1,1 @@
+<!-- Skills are rendered inline in the layout tabs -->
